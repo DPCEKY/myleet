@@ -12,8 +12,8 @@ public:
   bool isValidBST(TreeNode* root) {
     if(root == NULL)
       return true;
-    vector<int> tree;
     std::stack<TreeNode*> stack;
+    TreeNode* pre = NULL;
 
     while(root != NULL || !stack.empty()) {
       while(root != NULL) {
@@ -23,16 +23,14 @@ public:
 
       if(!stack.empty()) {
         root = stack.top();
-        tree.push_back(root->val);
+        if(pre != NULL && root->val <= pre->val)
+          return false;
+        pre = root;
         root = root->right;
         stack.pop();
       }
     }
 
-    for(int i = 0; i < tree.size() - 1; i++) {
-      if(tree[i] >= tree[i + 1])
-        return false;
-    }
     return true;
 
   }
