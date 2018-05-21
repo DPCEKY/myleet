@@ -1,3 +1,5 @@
+// 1. convert upper to lower cases!!
+// 2. increase begin && decrease end!!
 class Solution {
 public:
   bool isPalindrome(string s) {
