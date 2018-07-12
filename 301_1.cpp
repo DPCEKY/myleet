@@ -4,27 +4,50 @@ public:
     vector<string> res;
     if(s.empty())
       return res;
-    int left_num = 0, right_num = 0;
-    int inv_left_pos, inv_right_pos;
-    int inv_left_num = 0, inv_right_num = 0;
-    for(int i = 0; i < s.size(); i++) {
-      if(s[i] != '(' && s[i] != ')')
+    std::queue<std::string> q;
+    std::unordered_set<std::string> visited;
+    if(isValid(s)) {
+      res.push_back(s);
+      return res;
+    }
+    q.push(s);
+    visited.insert(s);
+    int len = s.size();
+    while(!q.empty()) {
+      auto next = q.front();
+      q.pop();
+      if(len != s.size() && next.size() < len)
         continue;
-
-      if(s[i] == '(') {
-        left_num++;
-        if(left_num - right_num == 1)
-          inv_left_pos = i;
+      if(isValid(next)) {
+        if(len == s.size())
+          len = next.size();
+        res.push_back(next);
+        continue;
       }
-      else if(s[i] == ')')
-        right_num++;
-
-      if(right_num - left_num > inv_right_num) {
-        inv_right_num = right_num - left_num;
-        inv_right_pos = i;
+      for(int i = 0; i < next.size(); i++) {
+        if(next[i] != '(' && next[i] != ')')
+          continue;
+        auto sub = next.substr(0, i) + next.substr(i + 1, next.size());
+        if(visited.find(sub) == visited.end()) {
+          visited.insert(sub);
+          q.push(sub);
+        }
       }
     }
+    return res;
+  }
 
-    
+  bool isVaild(string s) {
+    int num = 0;
+    for(int i = 0; i < s.size(); i++) {
+      if(s[i] == '(')
+        num++;
+      else if(s[i] == ')') {
+        num--;
+        if(num < 0)
+          return false;
+      }
+    }
+    return num == 0;
   }
 };
