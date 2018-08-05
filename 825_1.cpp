@@ -1,7 +1,7 @@
 class Solution {
 public:
   int numFriendRequests(vector<int>& ages) {
-    vector<int> age(120, 0);
+    vector<int> age(121, 0);
     for(int i = 0; i < ages.size(); i++) {
       age[ages[i]]++;
     }
